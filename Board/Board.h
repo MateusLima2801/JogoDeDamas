@@ -14,6 +14,7 @@ class Board
     vector<vector<Piece>> pieces;
 
 public:
+
     Board(int lines, int columns)
     {
         this->lines = lines;
@@ -24,6 +25,9 @@ public:
             pieces.push_back(aux);
         }
     }
+
+    Board(){}
+
 
     Piece piece(int line, int column)
     {
@@ -83,6 +87,10 @@ public:
             throw runtime_error("Invalid position!");
         }
     }
+
+    int getLines(){ return lines;}
+    int getColumns(){ return columns;}
+
 };
 
 #endif
