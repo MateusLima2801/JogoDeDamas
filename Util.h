@@ -13,7 +13,7 @@ class Util
 
     static void ReadKey()
     {
-        cout << "Press SPACE + ENTER for continue...";
+        cout << "Press SPACE + ENTER for continuing...";
         while (cin.get() != ' ');
     }
 
