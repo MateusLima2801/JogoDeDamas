@@ -106,8 +106,8 @@ class Screen{
 
         static void SetConsole(Board board, Position pos)
         {
-            SetBackground(pos);
             SetForeground(board, pos);
+            SetBackground(pos);
         }
 
         static void SetBackground(Position pos)
@@ -118,7 +118,7 @@ class Screen{
 
         static void SetForeground(Board board, Position pos)
         {
-            if(board.piece(pos)->getColor() == white) 
+            if(board.piece(pos)->getColor() == white)
                 cout << "\u001b[1m\u001b[38;5;160m";
             else if(board.piece(pos)->getColor() == black)
                 cout << "\u001b[1m\u001b[38;5;0m";

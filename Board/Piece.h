@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -17,6 +18,7 @@ class Piece
         Position position;
         int amtOfMoves;
         string symbol;
+        wstring wsymbol;
 
     public:
         Piece(Color color)
@@ -31,7 +33,7 @@ class Piece
 
         Color getColor(){ return color; }
         Position getPosition() { return position;}
-        
+
         bool existsPossibleMove()
         {
             vector<vector<bool> > matrix = this->possibleMoves();
@@ -110,6 +112,7 @@ class Piece
         }
 
         friend ostream &operator<<(ostream &os, Piece &piece);
+        friend wostream &operator<<(wostream &os, Piece &piece);
         friend class Checker;
         friend class Lady;
 };
@@ -117,6 +120,12 @@ class Piece
 ostream &operator<<(ostream &os, Piece &piece)
 {
     os << piece.symbol;
+    return os;
+}
+
+wostream &operator<<(wostream &os, Piece &piece)
+{
+    os << piece.wsymbol;
     return os;
 }
 

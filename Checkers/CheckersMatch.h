@@ -142,14 +142,6 @@ class CheckersMatch
             return false;
         }
 
-        void setArrayEmpty(int size, Piece* v)
-        {
-            for(int i = 0; i<size; i++)
-            {
-                v[i].setEmpty();
-            }
-        }
-
         void putNewPiece(int line, int column, Piece* piece)
         {
             board.putPiece(piece, Position(line, column));
@@ -158,7 +150,9 @@ class CheckersMatch
         
         void putPieces()
         {
-            //STANDARD GAME
+            //==========================================================================
+            //                           STANDARD GAME
+            //==========================================================================
              //SecondPlayer
             for(int i = 0; i<3; i++)
             {
@@ -177,8 +171,10 @@ class CheckersMatch
                 }
             }
 
-            //LADIES' GAME
-            //Use to test the transformation from checker into lady
+            //==========================================================================
+            //                          LADIES' GAME
+            // Use to test the transformation from checker into lady
+            //==========================================================================
             // //SecondPlayer
             // int i = 1;
             // for (int j = 0; j < Dim; j++)
@@ -195,13 +191,17 @@ class CheckersMatch
             //         putNewPiece(i, j, new Checker(opponent(livePlayer), &board, livePlayer));
             // }
 
-            // FINISH GAME
-            //Use to test the victory of one side
+            //==========================================================================
+            //                          FINISH GAME
+            //             Use to test the victory of one side
+            //==========================================================================
             // putNewPiece(4, 5, new Checker(livePlayer, &board, livePlayer));
             // putNewPiece(3, 4, new Checker(opponent(livePlayer), &board, livePlayer));
 
-            // KILL GAME
-            // Use to test randomic machine 
+            //==========================================================================
+            //                          KILL GAME
+            //                  Use to test randomic machine
+            //==========================================================================
             //  putNewPiece(4, 5, new Checker(livePlayer, &board, livePlayer));
             //  putNewPiece(2, 5, new Checker(opponent(livePlayer), &board, livePlayer));
         }

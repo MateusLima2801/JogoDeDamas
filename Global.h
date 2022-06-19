@@ -1,6 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 #include ".\Board\Color.h"
+
 const int Dim = 8;
 const int AmtPieces = 3*Dim;
 

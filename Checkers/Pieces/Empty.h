@@ -13,7 +13,11 @@ using namespace std;
 class Empty : public  Piece
 {
 public:
-    Empty() : Piece(emptyColor){ symbol = " ";}
+    Empty() : Piece(emptyColor)
+    {
+        symbol = " ";
+        wsymbol = L" ";
+    }
 
     virtual vector<vector<bool>> possibleMoves()
     {

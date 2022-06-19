@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <set>
 #include <iterator>
+#include <cstdlib>
 
 using namespace std;
 
@@ -115,7 +116,8 @@ public :
             }
         }
 
-        random_shuffle(catalogueOfMoves.begin(),catalogueOfMoves.end());
+        random_shuffle(catalogueOfMoves.begin(),catalogueOfMoves.end(), Util::myrandom);
+
         vector<pair<int, vector<Position>>>::iterator bigger_catch = catalogueOfMoves.begin();
         for (it = catalogueOfMoves.begin()+1; it != catalogueOfMoves.end(); it++)
         {

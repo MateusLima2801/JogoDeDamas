@@ -6,6 +6,8 @@
 #include "..\..\Board\Position.h"
 #include <vector>
 #include <fstream>
+#include <string>
+
 using namespace std;
 
 class Lady : public Piece
@@ -16,6 +18,7 @@ public:
         : Piece(color)
     {
         symbol = "L";
+        wsymbol = L"\u25D9";
         this->amtOfMoves = amtOfMoves;
         this->board = board;
     }

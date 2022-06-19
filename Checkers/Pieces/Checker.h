@@ -7,6 +7,7 @@
 #include <vector>
 #include <fstream>
 #include <cstdlib>
+#include <string>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ class Checker : public Piece
         Checker(Color color, Board* board, Color livePlayer)
             : Piece(color)
         {
+            wsymbol = L"\u25CF";
             symbol = "C";
             this->board = board;
             this->livePlayer = livePlayer;
@@ -37,6 +39,7 @@ class Checker : public Piece
                         break;
                     case white:
                         forthDirection = -1;
+                        break;
                     default:
                         forthDirection = -1;
                         break;
@@ -51,8 +54,9 @@ class Checker : public Piece
                         break;
                     case white:
                         forthDirection = 1;
+                        break;
                     default:
-                        forthDirection = -1;
+                        forthDirection = 1;
                         break;
                 }
             }

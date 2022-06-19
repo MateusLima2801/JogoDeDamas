@@ -17,19 +17,21 @@
 #include ".\Checkers\CheckersMatch.h"
 #include ".\Checkers\CheckersPosition.h"
 #include ".\Game.h"
-
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
 int main()
 {
+    srand(time(0));
+
     system("CLS");
     Screen::printHeader();
     CheckersMatch match;
     Game game(&match);
 
     Color winner = game.playTheWholeGame();
-
     
     system("CLS");
     Screen::printMatch(match);
