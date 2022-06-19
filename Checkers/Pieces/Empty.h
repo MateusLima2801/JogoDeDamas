@@ -13,7 +13,7 @@ using namespace std;
 class Empty : public  Piece
 {
 public:
-    Empty() : Piece(emptyColor){}
+    Empty() : Piece(emptyColor){ symbol = " ";}
 
     vector<vector<bool>> possibleMoves() override
     {
@@ -25,8 +25,6 @@ public:
         }
         return matrix;
     }
-
-    friend ostream &operator<<(ostream &os, Empty empty);
 };
 
 #endif

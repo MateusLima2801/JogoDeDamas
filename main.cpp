@@ -1,4 +1,3 @@
-#include <windows.h>
 #include <stdlib.h>
 #include <iostream>
 #include ".\Board\Board.h"
@@ -10,14 +9,14 @@
 #include ".\Checkers\CheckersMatch.h"
 #include ".\Checkers\CheckersPosition.h"
 
+
 using namespace std;
 
 int main()
 {
-    CheckersMatch match;
     system("CLS");
     Screen::printHeader();
-    match.Set();
+    CheckersMatch match;
     
     while (!match.isMatchFinished())
     {

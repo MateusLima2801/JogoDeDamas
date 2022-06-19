@@ -15,6 +15,7 @@ public:
     Lady(Color color, Board board)
         : Piece(color)
     {
+        symbol = "L";
         this->board = board;
     }
 
@@ -88,13 +89,6 @@ public:
         Piece p = board.piece(pos);
         return p.isEmpty();
     }
-
-    string symbol() override
-    {
-        return "L";
-    }
-
-    friend ostream &operator<<(ostream &os, Lady checker);
 };
 
 #endif

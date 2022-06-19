@@ -5,6 +5,7 @@
 #include "..\Board\Piece.h"
 #include "..\Board\Position.h"
 #include "..\Global.h"
+#include ".\Pieces\Checker.h"
 #include "CheckersPosition.h"
 #include <math.h>
 #include <algorithm>
@@ -39,6 +40,7 @@ class CheckersMatch
             // setArrayEmpty(AmtPieces,pieces);
             // piecesSize = 0;
             // capturatedSize = 0;
+            SetLivePlayer();
             putPieces();
         }
 
@@ -141,14 +143,31 @@ class CheckersMatch
             }
         }
 
-        void putNewPiece(char column, int line, Piece piece)
+        void putNewPiece(int line, int column, Piece piece)
         {
-            board.putPiece(piece, CheckersPosition(column, line).toPosition());
+            board.putPiece(piece, Position(line, column));
         }
 
         //NOT FINISHED YET
         void putPieces()
         {
+            //SecondPlayer
+            for(int i = 0; i<3; i++)
+            {
+                for(int j = 0; j<Dim; j++)
+                {
+                    if( (i+j)%2==1) putNewPiece(i,j, Checker(opponent(livePlayer), board, livePlayer));
+                }
+            }
+            
+            for(int i=Dim-3; i<Dim; i++)
+            {
+                for (int j = 0; j < Dim; j++)
+                {
+                    if ((i + j) % 2 == 1) putNewPiece(i, j, Checker(livePlayer, board, livePlayer));
+                }
+            }
+            //FirstPlayer
             
         }
 
@@ -162,7 +181,7 @@ class CheckersMatch
             }
         }
 
-        void Set()
+        void SetLivePlayer()
         {
             cout << "Let's begin:"<<endl;
             cout << " (B) Black" << endl;
@@ -192,6 +211,19 @@ class CheckersMatch
  
         }
 
+        Color opponent(Color color)
+        {
+            switch (color)
+            {
+            case white:
+                return black;
+            case black:
+                return white;
+            default:
+                throw invalid_argument("Invalid argument for opponent function");
+                return emptyColor;
+            }
+        }
         friend class Screen;
 };
 

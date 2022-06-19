@@ -20,6 +20,7 @@ class Checker : public Piece
         Checker(Color color, Board board, Color livePlayer)
             : Piece(color)
         {
+            symbol = "C";
             this->board = board;
             this->livePlayer = livePlayer;
             setDirection();
@@ -100,15 +101,11 @@ class Checker : public Piece
                 {
                     return true;
                 }
+                else return false;
             }
-            else
-                return p.isEmpty();
+            else return p.isEmpty();
         }
         
-       string symbol() override
-       {
-            return "C";
-       }
 };
 
 #endif

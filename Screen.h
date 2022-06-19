@@ -7,7 +7,9 @@
 #include "Global.h"
 #include ".\Checkers\CheckersMatch.h"
 #include ".\Checkers\CheckersPosition.h"
-#include <windows.h>
+#include ".\Checkers\Pieces\Checker.h"
+#include <io.h>
+#include <fcntl.h>
 
 using namespace std;
 
@@ -39,6 +41,8 @@ class Screen{
                     SetConsole(board,Position(i,j));
                     //what is the problem?
                     Piece p = board.piece(i, j);
+                    //Piece p = Checker(white, board, white);
+                    //string c=p.symbol;
                     cout << " " << p << " ";
                     ResetConsole();
                 }

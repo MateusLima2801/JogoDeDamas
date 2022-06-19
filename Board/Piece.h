@@ -7,7 +7,6 @@
 #include <iostream>
 #include <fstream>
 #include <iostream>
-#include <windows.h>
 
 using namespace std;
 
@@ -17,6 +16,7 @@ class Piece
         Color color;
         Position position;
         int amtOfMoves;
+        string symbol;
 
     public:
         Piece(Color color)
@@ -97,10 +97,6 @@ class Piece
             }
         }
 
-        virtual string symbol(){
-            return " ";
-        }
-
         friend ostream &operator<<(ostream &os, Piece &piece);
         friend class Checker;
         friend class Lady;
@@ -108,7 +104,7 @@ class Piece
 
 ostream &operator<<(ostream &os, Piece &piece)
 {
-    os << piece.symbol();
+    os << piece.symbol;
     return os;
 }
 
