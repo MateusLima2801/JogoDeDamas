@@ -2,6 +2,7 @@
 #define POSITION_H
 #include <fstream>
 #include <iostream>
+#include <iostream>
 
 using namespace std;
 
@@ -32,6 +33,20 @@ public:
         this->column = pos.column;
     }
 
+    Position operator+(Position& pos)
+    {
+        return Position(line+pos.line, column+ pos.column);
+    }
+
+    Position operator-(Position &pos)
+    {
+        return Position(line - pos.line, column - pos.column);
+    }
+
+    Position operator/(int d)
+    {
+        return Position(line/d, column/d);
+    }
     friend ostream &operator<<(ostream &os, Position &pos);
 };
 

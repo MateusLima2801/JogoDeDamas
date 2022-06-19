@@ -3,93 +3,85 @@
 #include "Piece.h"
 #include "Position.h"
 #include <vector>
+#include <iostream>
+#include "..\Checkers\Pieces\Empty.h"
+#include <stdlib.h>
 
 using namespace std;
 
 class Board
 {
-    int lines;
-    int columns;
-
     vector<vector<Piece>> pieces;
 
-public:
-
-    Board(int lines, int columns)
-    {
-        this->lines = lines;
-        this->columns = columns;
-        for (int i = 0; i < lines; i++)
+    public:
+        
+        Board()
         {
-            vector<Piece> aux(columns);
-            pieces.push_back(aux);
+            for (int i = 0; i < Dim; i++)
+            {
+                vector<Piece> aux(Dim, Empty());
+                pieces.push_back(aux);
+            }
         }
-    }
 
-    Board(){}
-
-
-    Piece piece(int line, int column)
-    {
-        return pieces[line][column];
-    }
-
-    Piece piece(Position pos)
-    {
-        return pieces[pos.line][pos.column];
-    }
-
-    bool existsPiece(Position pos)
-    {
-        validatePosition(pos);
-        return !piece(pos).isEmpty();
-    }
-
-    void putPiece(Piece p, Position pos)
-    {
-        if(existsPiece(pos))
+        Piece piece(int line, int column)
         {
-            throw runtime_error("There is already a piece at this position!");
+            return pieces[line][column];
         }
-        pieces[pos.line][pos.column] = p;
-        p.setPosition(pos);
-    }
 
-    Piece removePiece(Position pos)
-    {
-        if(piece(pos).isEmpty())
+        Piece piece(Position pos)
         {
-            return piece(pos);
+            return pieces[pos.line][pos.column];
         }
-        else
-        {
-            Piece aux = piece(pos);
-            aux.setEmpty();
-            pieces[pos.line][pos.column].setEmpty();
-            return aux;
-        }
-    }
 
-    bool validPosition(Position pos)
-    {
-        if (pos.line < 0 || pos.line >= lines || pos.column < 0 || pos.column >= columns)
+        bool existsPiece(Position pos)
         {
-            return false;
+            validatePosition(pos);
+            return !piece(pos).isEmpty();
         }
-        else
-            return true;
-    }
 
-    void validatePosition(Position pos)
-    {
-        if (!validPosition(pos))
+        void putPiece(Piece p, Position pos)
         {
-            throw runtime_error("Invalid position!");
+            if(existsPiece(pos))
+            {
+                throw runtime_error("There is already a piece at this position!");
+            }
+            pieces[pos.line][pos.column] = p;
+            p.setPosition(pos);
         }
-    }
 
-    int getLines(){ return lines;}
-    int getColumns(){ return columns;}
+        Piece removePiece(Position pos)
+        {
+            if(piece(pos).isEmpty())
+            {
+                return piece(pos);
+            }
+            else
+            {
+                Piece aux = piece(pos);
+                //aux.setEmpty();
+                pieces[pos.line][pos.column].setEmpty();
+                return aux;
+            }
+        }
+
+        bool static validPosition(Position pos)
+        {
+            if (pos.line < 0 || pos.line >= Dim || pos.column < 0 || pos.column >= Dim)
+            {
+                return false;
+            }
+            else
+                return true;
+        }
+
+        void validatePosition(Position pos)
+        {
+            if (!validPosition(pos))
+            {
+                throw runtime_error("Invalid position!");
+            }
+        }
 
 };
 

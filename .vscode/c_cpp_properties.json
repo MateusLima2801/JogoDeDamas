@@ -11,8 +11,8 @@
                 "_UNICODE"
             ],
             "compilerPath": "C:/MinGW/bin/gcc.exe",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
+            "cStandard": "${default}",
+            "cppStandard": "${default}",
             "intelliSenseMode": "windows-gcc-x86"
         }
     ],

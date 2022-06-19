@@ -1,8 +1,9 @@
 #ifndef CHECKERS_POSITION_H
 #define CHECKERS_POSITION_H
-#include "Global.h"
-#include "Position.h"
+#include "..\Global.h"
+#include "..\Board\Position.h"
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
