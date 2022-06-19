@@ -10,16 +10,17 @@ using namespace std;
 
 class Lady : public Piece
 {
-    Board board;
+    Board* board;
 public:
-    Lady(Color color, Board board)
+    Lady(Color color, Board* board, int amtOfMoves)
         : Piece(color)
     {
         symbol = "L";
+        this->amtOfMoves = amtOfMoves;
         this->board = board;
     }
 
-    vector<vector<bool>> possibleMoves() override
+    virtual vector<vector<bool>> possibleMoves()
     {
         vector<vector<bool>> matrix;
         for (int i = 0; i < Dim; i++)
@@ -34,9 +35,9 @@ public:
         pos.setPosition(position.line - 1, position.column + 1);
         while(Board::validPosition(pos))
         {
-            Piece p = board.piece(pos);
-            if (p.color == color) break;
-            else if(p.isEmpty())
+            Piece *p = board->piece(pos);
+            if (p->color == color) break;
+            else if(p->isEmpty())
                 matrix[pos.line][pos.column] = true;
             pos.line--;
             pos.column++;
@@ -46,10 +47,10 @@ public:
         pos.setPosition(position.line - 1, position.column - 1);
         while (Board::validPosition(pos))
         {
-            Piece p = board.piece(pos);
-            if (p.color == color)
+            Piece *p = board->piece(pos);
+            if (p->color == color)
                 break;
-            else if (p.isEmpty())
+            else if (p->isEmpty())
                 matrix[pos.line][pos.column] = true;
             pos.line--;
             pos.column--;
@@ -59,10 +60,10 @@ public:
         pos.setPosition(position.line + 1, position.column + 1);
         while (Board::validPosition(pos))
         {
-            Piece p = board.piece(pos);
-            if (p.color == color)
+            Piece *p = board->piece(pos);
+            if (p->color == color)
                 break;
-            else if (p.isEmpty())
+            else if (p->isEmpty())
                 matrix[pos.line][pos.column] = true;
             pos.line++;
             pos.column++;
@@ -72,10 +73,10 @@ public:
         pos.setPosition(position.line + 1, position.column - 1);
         while (Board::validPosition(pos))
         {
-            Piece p = board.piece(pos);
-            if (p.color == color)
+            Piece *p = board->piece(pos);
+            if (p->color == color)
                 break;
-            else if (p.isEmpty())
+            else if (p->isEmpty())
                 matrix[pos.line][pos.column] = true;
             pos.line++;
             pos.column--;
@@ -86,8 +87,8 @@ public:
 
     bool canMove(Position pos)
     {
-        Piece p = board.piece(pos);
-        return p.isEmpty();
+        Piece *p = board->piece(pos);
+        return p->isEmpty();
     }
 };
 

@@ -6,11 +6,13 @@
 #include "..\Board\Position.h"
 #include "..\Global.h"
 #include ".\Pieces\Checker.h"
+#include ".\Pieces\Lady.h"
 #include "CheckersPosition.h"
-#include <math.h>
+#include <cstdlib>
 #include <algorithm>
 #include <iterator>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -20,13 +22,7 @@ class CheckersMatch
     int turn;
     Color currentPlayer;
     Color livePlayer;
-    bool finished;
-    // Piece pieces[AmtPieces];
-    // int piecesSize;
-    // Piece capturated[AmtPieces];
-    // int capturatedSize;
-
-    
+    vector<Position> capturedAtTheTurn;
 
     public:
         Board board;
@@ -36,35 +32,50 @@ class CheckersMatch
             board = Board();
             turn = 1;
             currentPlayer = white;
-            // setArrayEmpty(AmtPieces, capturated);
-            // setArrayEmpty(AmtPieces,pieces);
-            // piecesSize = 0;
-            // capturatedSize = 0;
-            SetLivePlayer();
-            putPieces();
         }
 
-        Piece doMovement(Position origin, Position destination)
+
+        void doMovement(Position origin, Position destination)
         {
-            Piece p = board.removePiece(origin);
-            p.increaseAmtOfMoves();
-            Piece capturatedPiece;
-            if (capturatedAPiece(origin, destination))
+            Piece *p = board.removePiece(origin);
+            p->increaseAmtOfMoves();
+
+            if (getCapturatedPiece(origin, destination))
             {
-                capturatedPiece = board.removePiece((origin-destination)/2+origin);
-                //capturated[capturatedSize++] = capturatedPiece;
+                for(int i = 0; i<capturedAtTheTurn.size(); i++)
+                {
+                    board.removePiece(capturedAtTheTurn[i]);
+                }
             }
-            else capturatedPiece.setEmpty();
 
             board.putPiece(p, destination);
-            return capturatedPiece;
         }
 
         void makePlay(Position origin, Position destination)
         {
-            Piece capturatedPiece = doMovement(origin, destination);
+            doMovement(origin, destination);
             turn++;
             switchesPlayer();
+            capturedAtTheTurn.clear();
+        }
+
+        void checkForLadies()
+        {
+            for (int i = 0; i < Dim; i++)
+            {
+                checkForLadyAt(livePlayer, 0, i);
+                checkForLadyAt(opponent(livePlayer), Dim - 1, i);
+            }
+        }
+
+        void checkForLadyAt(Color color, int line, int column)
+        {
+            if (board.piece(line, column)->getColor() == color)
+            {
+                Position pos(line, column);
+                Piece *p = board.removePiece(pos);
+                board.putPiece(new Lady(color, &board, p->getAmtOfMoves()), pos);
+            }
         }
 
         void switchesPlayer()
@@ -74,66 +85,62 @@ class CheckersMatch
 
         void validateOrigin(Position pos)
         {
-            if(board.piece(pos).isEmpty())
-            {
+            Piece *p = board.piece(pos);
+            if (p->isEmpty())
+            {  
                 throw runtime_error("There is no piece at the chosen position!");
             }
-            else if(currentPlayer != board.piece(pos).getColor())
+            if(currentPlayer != p->getColor())
             {
                 throw runtime_error("The piece chosen as origin is not yours!");
             }
-            else if(!board.piece(pos).existsPossibleMove())
+            if(!p->existsPossibleMove())
             {
+
                 throw runtime_error("There is no possible movements for the piece chosen as origin!");
             }
         }
 
         void validateDestination(Position origin, Position destination)
         {
-            if(!board.piece(origin).canMoveTo(destination))
+            if(!board.piece(origin)->canMoveTo(destination))
             {
                 throw runtime_error("Invalid destination position!");
             }
         }
 
-        bool capturatedAPiece(Position origin, Position destination)
+        bool getCapturatedPiece(Position origin, Position destination)
         {
-            return abs(origin.column-destination.column) == 2;     
+            int n_steps = std::abs(destination.line - origin.line);
+            Position step =(destination - origin)/n_steps;
+            Position current = origin;
+            while(current != destination)
+            {
+                if(board.piece(current)->getColor() == opponent(currentPlayer))
+                {
+                    capturedAtTheTurn.push_back(current);
+                    return true;
+                }
+                current = current +step;
+            }
+            return false;
         }
 
-        // Piece* capturatedPieces(Color color)
-        // {
-        //     Piece aux[AmtPieces];
-        //     int auxSize = 0;
-        //     setArrayEmpty(AmtPieces, aux);
-        //     for(int i = 0; i< AmtPieces; i++)
-        //     {
-        //         if(capturated[i].getColor() == color)
-        //         {
-        //             aux[auxSize++] = capturated[i];
-        //         }
-        //     }
-            
-        //     return aux;
-        // }
-
-        // //NOT FINISHED YET
-        // Piece *piecesAtTheGame(Color color)
-        // {
-        //     Piece aux[AmtPieces];
-        //      int auxSize = 0;
-        //     setArrayEmpty(AmtPieces, aux);
-        //     for (int i = 0; i < AmtPieces; i++)
-        //     {
-        //         if (pieces[i].getColor() == color)
-        //         {
-        //             aux[auxSize++] = pieces[i];
-        //         }
-        //     }
-
-
-        //     return aux;
-        // }
+        bool pieceWasCapturated(Position origin, Position destination)
+        {
+            int n_steps = std::abs(destination.line - origin.line);
+            Position step = (destination - origin) / n_steps;
+            Position current = origin;
+            while (current != destination)
+            {
+                if (board.piece(current)->getColor() == opponent(currentPlayer))
+                {
+                    return true;
+                }
+                current = current + step;
+            }
+            return false;
+        }
 
         void setArrayEmpty(int size, Piece* v)
         {
@@ -143,40 +150,68 @@ class CheckersMatch
             }
         }
 
-        void putNewPiece(int line, int column, Piece piece)
+        void putNewPiece(int line, int column, Piece* piece)
         {
             board.putPiece(piece, Position(line, column));
         }
 
-        //NOT FINISHED YET
+        
         void putPieces()
         {
-            //SecondPlayer
+            //STANDARD GAME
+             //SecondPlayer
             for(int i = 0; i<3; i++)
             {
                 for(int j = 0; j<Dim; j++)
                 {
-                    if( (i+j)%2==1) putNewPiece(i,j, Checker(opponent(livePlayer), board, livePlayer));
+                    if( (i+j)%2==1) putNewPiece(i,j, new Checker(opponent(livePlayer), &board, livePlayer));
                 }
             }
-            
+
+            // FirstPlayer
             for(int i=Dim-3; i<Dim; i++)
             {
                 for (int j = 0; j < Dim; j++)
                 {
-                    if ((i + j) % 2 == 1) putNewPiece(i, j, Checker(livePlayer, board, livePlayer));
+                    if ((i + j) % 2 == 1) putNewPiece(i, j, new Checker(livePlayer, &board, livePlayer));
                 }
             }
-            //FirstPlayer
-            
+
+            //LADIES' GAME
+            //Use to test the transformation from checker into lady
+            // //SecondPlayer
+            // int i = 1;
+            // for (int j = 0; j < Dim; j++)
+            // {
+            //     if ((i + j) % 2 == 1)
+            //         putNewPiece(i, j, new Checker(livePlayer, &board, livePlayer));
+            // }
+
+            // // FirstPlayer
+            // i = Dim - 2;
+            // for (int j = 0; j < Dim; j++)
+            // {
+            //     if ((i + j) % 2 == 1)
+            //         putNewPiece(i, j, new Checker(opponent(livePlayer), &board, livePlayer));
+            // }
+
+            // FINISH GAME
+            //Use to test the victory of one side
+            // putNewPiece(4, 5, new Checker(livePlayer, &board, livePlayer));
+            // putNewPiece(3, 4, new Checker(opponent(livePlayer), &board, livePlayer));
+
+            // KILL GAME
+            // Use to test randomic machine 
+            //  putNewPiece(4, 5, new Checker(livePlayer, &board, livePlayer));
+            //  putNewPiece(2, 5, new Checker(opponent(livePlayer), &board, livePlayer));
         }
 
-        bool isMatchFinished()
+        bool isMatchFinished(Color &winner )
         {
-            if(!finished) return false;
+            if (!board.isFinished()) return false;
             else{
-                string winner = currentPlayer == white ? "White" : "Black";
-                cout << "WINNER: " << winner;
+                winner = opponent(currentPlayer);
+                turn --;
                 return true;
             }
         }
@@ -224,7 +259,10 @@ class CheckersMatch
                 return emptyColor;
             }
         }
+
+        
         friend class Screen;
+        friend class Game;
 };
 
 #endif

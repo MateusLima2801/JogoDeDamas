@@ -14,10 +14,10 @@ class Checker : public Piece
 {   
         int forthDirection;
         Color livePlayer;
-        Board board;
+        Board *board;
 
     public:
-        Checker(Color color, Board board, Color livePlayer)
+        Checker(Color color, Board* board, Color livePlayer)
             : Piece(color)
         {
             symbol = "C";
@@ -93,17 +93,17 @@ class Checker : public Piece
 
         bool canMove(Position pos)
         {
-            Piece p = board.piece(pos);
+            Piece* p = board->piece(pos);
             if (std::abs(pos.line - position.line) == 2)
             {
                 Position Middle(position.line + (pos.line - position.line) / 2, position.column + (pos.column - position.column) / 2);
-                if (board.piece(Middle).color == opponent(color) && p.isEmpty())
+                if (board->piece(Middle)->color == opponent(color) && p->isEmpty())
                 {
                     return true;
                 }
                 else return false;
             }
-            else return p.isEmpty();
+            else return p->isEmpty();
         }
         
 };

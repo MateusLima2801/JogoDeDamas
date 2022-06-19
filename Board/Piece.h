@@ -27,19 +27,26 @@ class Piece
 
         Piece(){}
 
-        Color getColor(){ return color; }
+        virtual ~Piece(){}
 
+        Color getColor(){ return color; }
+        Position getPosition() { return position;}
+        
         bool existsPossibleMove()
         {
-            vector<vector<bool> > matrix = possibleMoves();
+            vector<vector<bool> > matrix = this->possibleMoves();
             for(int i = 0; i < Dim; i++)
             {
                 for(int j = 0; j< Dim; j++)
                 {
-                    if(matrix[i][j]) return true;
+                    if(matrix[i][j])
+                    {
+                        return true;
+                    }
+                        
                 }
             }
-
+            //cout << "false it is" << endl;
             return false;
         }
 
@@ -48,6 +55,11 @@ class Piece
             return vector<vector<bool>>();
         }
 
+        int getAmtOfMoves()
+        {
+            return amtOfMoves;
+        }
+        
         void increaseAmtOfMoves()
         {
             amtOfMoves ++;

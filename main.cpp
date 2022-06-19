@@ -1,4 +1,12 @@
-#include <stdlib.h>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
+
+#include <chrono>
+#include <thread>
+#include <cstdlib>
 #include <iostream>
 #include ".\Board\Board.h"
 #include ".\Board\Piece.h"
@@ -8,6 +16,7 @@
 #include "Screen.h"
 #include ".\Checkers\CheckersMatch.h"
 #include ".\Checkers\CheckersPosition.h"
+#include ".\Game.h"
 
 
 using namespace std;
@@ -17,38 +26,15 @@ int main()
     system("CLS");
     Screen::printHeader();
     CheckersMatch match;
+    Game game(&match);
+
+    Color winner = game.playTheWholeGame();
+
     
-    while (!match.isMatchFinished())
-    {
-        try
-        {
-            system("CLS");
-            Screen::printMatch(match);
-            cout << endl;
-            cout << "Origin: ";
-            Position origin = Screen::readCheckersPosition().toPosition();
-            match.validateOrigin(origin);
-            vector<vector<bool>> possiblePositions = match.board.piece(origin).possibleMoves();
+    system("CLS");
+    Screen::printMatch(match);
+    Screen::printWinner(winner);
 
-            system("CLS");
-            Screen::printBoard(match.board, possiblePositions);
-
-            cout << endl;
-            cout << "Destination: ";
-            Position destination = Screen::readCheckersPosition().toPosition();
-            match.validateDestination(origin, destination);
-        }
-        catch(runtime_error &e)
-        {
-            char c;
-            cout << e.what() << endl;
-            cin >> c;
-        }
-
-    }
-
-    cout << "Returning..." << endl;
-    
     return 0;
 }
 

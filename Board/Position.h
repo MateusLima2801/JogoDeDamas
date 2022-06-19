@@ -20,7 +20,7 @@ public:
         this->line = line;
         this->column = column;
     }
-
+    
     void setPosition(int line, int column)
     {
         this->line = line;
@@ -47,6 +47,17 @@ public:
     {
         return Position(line/d, column/d);
     }
+
+    bool operator==(Position &pos)
+    {
+        return line == pos.line && column == pos.column;
+    }
+
+    bool operator!=(Position &pos)
+    {
+        return line != pos.line || column != pos.column;
+    }
+
     friend ostream &operator<<(ostream &os, Position &pos);
 };
 
